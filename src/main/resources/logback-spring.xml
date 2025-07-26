@@ -4,20 +4,16 @@
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>logstash:5000</destination>
 
-        <!-- Retry strategy -->
-        <connectionStrategy>
-            <roundRobin>
-                <connectionTTL>5 minutes</connectionTTL>
-            </roundRobin>
-        </connectionStrategy>
-
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <pattern>ISO8601</pattern>
+                </timestamp>
                 <pattern>
                     <pattern>
                         {
                         "service": "user-service",
-                        "timestamp": "%d{ISO8601}",
                         "level": "%level",
                         "thread": "%thread",
                         "logger": "%logger{40}",
