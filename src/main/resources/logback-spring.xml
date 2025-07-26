@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration debug="true">
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>logstash:5000</destination>
 
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"service":"user-service"}</customFields>
+        <!-- Retry strategy -->
+        <connectionStrategy>
+            <roundRobin>
+                <connectionTTL>5 minutes</connectionTTL>
+            </roundRobin>
+        </connectionStrategy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "service": "user-service",
+                        "timestamp": "%d{ISO8601}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "logger": "%logger{40}",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
         </encoder>
     </appender>
 
