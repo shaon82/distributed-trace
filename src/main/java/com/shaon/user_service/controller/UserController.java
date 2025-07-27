@@ -18,6 +18,10 @@ public class UserController {
 
     @PostMapping("/create")
     public String createUser(@RequestParam String name) {
+        if (name == null || name.isEmpty()) {
+            logger.error("User creation failed: Name cannot be null or empty");
+            return "Error: Name cannot be null or empty.";
+        }
         logger.info("Creating user with name {}", name);
         return "User " + name + " created.";
     }

@@ -1,32 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true">
+<configuration>
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>logstash:5000</destination>
-
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <fieldName>timestamp</fieldName>
-                    <pattern>ISO8601</pattern>
-                </timestamp>
-                <pattern>
-                    <pattern>
-                        {
-                        "service": "user-service",
-                        "level": "%level",
-                        "thread": "%thread",
-                        "logger": "%logger{40}",
-                        "message": "%message"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
-        </encoder>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="LOGSTASH" />
     </root>
 
 </configuration>
